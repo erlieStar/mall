@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/mall
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: peng2014
+  http:
+    multipart:
+      #设置文件大小限制
+      max-file-size: 1MB
+      #设置上传数据总大小
+      max-request-size: 10MB
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.makenv.pojo
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql

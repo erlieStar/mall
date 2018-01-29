@@ -10,8 +10,14 @@ public class DateTimeUtil {
 
     public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(STANDARD_FORMAT);
 
-    public static Date strToDate(String str) throws ParseException {
-        return simpleDateFormat.parse(str);
+    public static Date strToDate(String str) {
+        Date date = new Date();
+        try {
+            date = simpleDateFormat.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public static String dateToStr(Date date) {

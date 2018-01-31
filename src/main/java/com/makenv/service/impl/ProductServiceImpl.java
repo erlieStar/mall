@@ -3,6 +3,7 @@ package com.makenv.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.makenv.common.Const;
 import com.makenv.common.ResponseCode;
 import com.makenv.common.ServerResponse;
 import com.makenv.dao.CategoryMapper;
@@ -160,12 +161,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ServerResponse<ProductDetailVo> getProductDetail(Integer productId) {
-        return null;
+        if (productId == null) {
+            return ServerResponse.errorCodeMsg(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if (product == null || product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()) {
+            return ServerResponse.errorMsg("产品已下架或者删除");
+        }
+        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+        return ServerResponse.successData(productDetailVo);
     }
 
     @Override
-    public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, int categoryId, int pageNum, int pageSize, String orderBy) {
+    public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy) {
         return null;
     }
+
 
 }

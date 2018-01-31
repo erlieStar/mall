@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class JustTest {
 
@@ -30,5 +31,19 @@ public class JustTest {
         stringList.add("2");
         stringList.add("3");
         System.out.println(stringList);
+    }
+
+    @Test
+    public void testNull2() {
+        String str = null;
+        if (str == null || str.charAt(0) == 'a') {
+            System.out.println("hehe");
+        }
+    }
+
+    @Test
+    public void testRandom() {
+        //应该是生成小于100的随机数
+        System.out.println(new Random().nextInt(100));
     }
 }

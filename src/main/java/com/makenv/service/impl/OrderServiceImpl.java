@@ -5,9 +5,7 @@ import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.demo.trade.config.Configs;
 import com.alipay.demo.trade.model.ExtendParams;
 import com.alipay.demo.trade.model.GoodsDetail;
-import com.alipay.demo.trade.model.builder.AlipayTradePayRequestBuilder;
 import com.alipay.demo.trade.model.builder.AlipayTradePrecreateRequestBuilder;
-import com.alipay.demo.trade.model.result.AlipayF2FPayResult;
 import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
 import com.alipay.demo.trade.service.AlipayTradeService;
 import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
@@ -25,7 +23,6 @@ import com.makenv.util.DateTimeUtil;
 import com.makenv.util.FTPUtil;
 import com.makenv.util.PropertiesUtil;
 import com.makenv.vo.OrderVo;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -36,10 +33,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -353,7 +347,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServerResponse cancel(Integer userId, Long orderNO) {
-        return null;
+        Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNO);
+        if (order == null) {
+            return ServerResponse.errorMsg("该用户此订单不存在");
+        }
+        if (order.getStatus() != Const.OrderStatusEnum.NO_PAY.getCode()) {
+            return ServerResponse.errorMsg("已付款，无法取消订单");
+        }
+        Order updateOrder = new Order();
+        updateOrder.setId(order.getId());
+        updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
+
+        int result = orderMapper.updateByPrimaryKeySelective(updateOrder);
+        if (result > 0) {
+            return ServerResponse.success();
+        }
+        return ServerResponse.error();
     }
 
     @Override
@@ -388,6 +397,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServerResponse<String> manageSendGoods(Long orderNo) {
-        return null;
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order != null) {
+            if (order.getStatus() == Const.OrderStatusEnum.PAID.getCode()) {
+                order.setStatus(Const.OrderStatusEnum.SHIPPED.getCode());
+                order.setSendTime(new Date());
+                orderMapper.updateByPrimaryKeySelective(order);
+                return ServerResponse.successMsg("发货成功");
+            }
+        }
+        return ServerResponse.errorMsg("订单不存在");
     }
 }

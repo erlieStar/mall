@@ -11,5 +11,5 @@ public interface CategoryService {
     ServerResponse addCategory(String categoryName, Integer parentId);
     ServerResponse updateCategoryName(Integer categoryId, String categoryName);
     ServerResponse <List<Category>> getChildCategory(Integer categoryId);
-    ServerResponse <Set<Category>> getAllChildCategory(Integer categoryId);
+    ServerResponse <List<Integer>> getAllChildCategory(Integer categoryId);
 }

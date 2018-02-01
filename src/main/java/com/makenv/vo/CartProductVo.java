@@ -14,17 +14,17 @@ public class CartProductVo {
     private Integer quantity;
 
     //产品部分
-    private String name;
+    private String productName;
 
-    private String mainImage;
+    private String productSubtitle;
 
-    private String subImages;
+    private String productMainImage;
 
-    private BigDecimal price;
+    private BigDecimal productPrice;
 
-    private Integer stock;
+    private Integer productStock;
 
-    private Integer status;
+    private Integer productStatus;
 
     //新增的
 
@@ -67,52 +67,52 @@ public class CartProductVo {
         this.quantity = quantity;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getMainImage() {
-        return mainImage;
+    public String getProductSubtitle() {
+        return productSubtitle;
     }
 
-    public void setMainImage(String mainImage) {
-        this.mainImage = mainImage;
+    public void setProductSubtitle(String productSubtitle) {
+        this.productSubtitle = productSubtitle;
     }
 
-    public String getSubImages() {
-        return subImages;
+    public String getProductMainImage() {
+        return productMainImage;
     }
 
-    public void setSubImages(String subImages) {
-        this.subImages = subImages;
+    public void setProductMainImage(String productMainImage) {
+        this.productMainImage = productMainImage;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getProductPrice() {
+        return productPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public Integer getStock() {
-        return stock;
+    public Integer getProductStock() {
+        return productStock;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setProductStock(Integer productStock) {
+        this.productStock = productStock;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getProductStatus() {
+        return productStatus;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setProductStatus(Integer productStatus) {
+        this.productStatus = productStatus;
     }
 
     public BigDecimal getProductTotalPrice() {

@@ -1,5 +1,6 @@
 package com.makenv.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.makenv.common.ServerResponse;
 import com.makenv.dao.CategoryMapper;
@@ -72,10 +73,17 @@ public class CategoryServiceImpl implements CategoryService {
      * 找到当前节点的孩子节点以及孩子节点的孩子节点
      */
     @Override
-    public ServerResponse<Set<Category>> getAllChildCategory(Integer categoryId) {
-        Set<Category> categorySet = Sets.newHashSet();
-        findChild(categorySet, categoryId);
-        return ServerResponse.successData(categorySet);
+    public ServerResponse<List<Integer>> getAllChildCategory(Integer categoryId) {
+
+        List<Integer> categoryIdList = Lists.newArrayList();
+        if (categoryId != null) {
+            Set<Category> categorySet = Sets.newHashSet();
+            findChild(categorySet, categoryId);
+            for (Category categoryItem : categorySet) {
+                categoryIdList.add(categoryItem.getId());
+            }
+        }
+        return ServerResponse.successData(categoryIdList);
     }
 
     private Set<Category> findChild(Set<Category> categorySet, Integer categoryId) {

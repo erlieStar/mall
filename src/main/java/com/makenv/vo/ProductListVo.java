@@ -4,13 +4,22 @@ import java.math.BigDecimal;
 
 public class ProductListVo {
 
+    //Product的部分
     private Integer id;
+
     private Integer categoryId;
+
     private String name;
+
     private String subtitle;
+
     private String mainImage;
+
     private BigDecimal price;
+
     private Integer status;
+
+    //新增的部分
     private String imageHost;
 
     public Integer getId() {

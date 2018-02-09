@@ -182,6 +182,12 @@
     SET password = #{password}, update_time = now()
     where username = #{username}
   </update>
+  <select id="checkPassword" resultType="int" parameterType="map">
+    select count(1)
+    from mall_user
+    where password = #{password}
+    and id = #{userId}
+  </select>
   <select id="checkEmailByUserId" parameterType="string" resultType="int">
     select count(1)
     from mall_user

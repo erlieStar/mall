@@ -101,10 +101,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken) {
+        if (StringUtils.isBlank(forgetToken)) {
+            return ServerResponse.errorMsg("参数错误，token需要传递");
+        }
+        ServerResponse validResponse = checkValid(username, Const.USERNAME);
+        if (validResponse.isSuccess()) {
+            return ServerResponse.errorMsg("用户不存在");
+        }
+        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        if (StringUtils.isBlank(token)) {
+            return ServerResponse.errorMsg("token无效或者过期");
+        }
+        if (StringUtils.equals(forgetToken, token)) {
+            String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
+            int result = userMapper.updataPassByUsername(username, md5Password);
+            if (result > 0) {
+                return ServerResponse.errorMsg("修改密码成功");
+            }
+        } else {
+            return ServerResponse.errorMsg("token错误，请重新获取重置密码的token");
+        }
+        return ServerResponse.errorMsg("修改密码失败");
+    }
+
+    @Override
+    public ServerResponse<String> resetPassword(String passwordOld, String passwordNew, User user) {
+        int result = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld), user.getId());
+        if (result == 0) {
+            return ServerResponse.errorMsg("旧密码错误");
+        }
+        user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        result = userMapper.updateByPrimaryKeySelective(user);
+        if (result > 0) {
+            return ServerResponse.successMsg("密码更新成功");
+        }
+        return ServerResponse.errorMsg("密码更新失败");
+    }
+
+    @Override
     public ServerResponse<User> updateInformation(User user) {
         //username不能进行修改
         //email可以修改，如果email已经存在，则不能是当前用户的
-        //注册的时候邮箱不能重复，但可以改成重复的邮箱，没太理解作者的逻辑
+        //注册的时候邮箱不能重复，但可以改成重复的邮箱
         int result = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
         if (result > 0) {
             return ServerResponse.errorMsg("email已经存在");

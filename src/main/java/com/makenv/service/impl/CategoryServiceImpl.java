@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ServerResponse addCategory(String categoryName, Integer parentId) {
-        if (parentId == null || StringUtils.isNotBlank(categoryName))  {
+        if (parentId == null || StringUtils.isBlank(categoryName))  {
             return ServerResponse.errorMsg("添加品类参数错误");
         }
         Category category = new Category();
@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ServerResponse updateCategoryName(Integer categoryId, String categoryName) {
-        if (categoryId == null || StringUtils.isNotBlank(categoryName))  {
+        if (categoryId == null || StringUtils.isBlank(categoryName))  {
             return ServerResponse.errorMsg("更新品类参数错误");
         }
         Category category = new Category();

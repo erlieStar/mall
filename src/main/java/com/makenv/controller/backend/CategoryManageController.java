@@ -23,6 +23,7 @@ public class CategoryManageController {
     @Autowired
     private CategoryService categoryService;
 
+    //增加节点，测试通过
     @RequestMapping("add_category")
     public ServerResponse addCategory(HttpSession session, String categoryName, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -37,6 +38,7 @@ public class CategoryManageController {
         }
     }
 
+    //修改品类名字，测试通过
     @RequestMapping("set_category_name")
     public ServerResponse setCategoryName(HttpSession session, Integer categoryId, String categoryName) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -51,6 +53,7 @@ public class CategoryManageController {
         }
     }
 
+    //获取平级子节点，测试通过
     @RequestMapping("get_category")
     public ServerResponse getChildCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -65,6 +68,7 @@ public class CategoryManageController {
         }
     }
 
+    //获取当前分类id及递归子节点categoryId，测试通过
     @RequestMapping("get_deep_category")
     public ServerResponse getAllChildCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);

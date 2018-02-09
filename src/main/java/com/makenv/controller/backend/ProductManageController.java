@@ -35,6 +35,7 @@ public class ProductManageController {
     @Autowired
     FileService fileService;
 
+    //新增或更新产品,传Id为更新，不传为新增,测试通过
     @RequestMapping("save")
     public ServerResponse productSave(HttpSession session, Product product) {
 
@@ -49,6 +50,7 @@ public class ProductManageController {
         }
     }
 
+    //产品上下架,测试通过
     @RequestMapping("set_sale_status")
     public ServerResponse setSaleStatus(HttpSession session, Integer productId, Integer status) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -62,6 +64,7 @@ public class ProductManageController {
         }
     }
 
+    //商品详情，测试通过
     @RequestMapping("detail")
     public ServerResponse getDetail(HttpSession session, Integer productId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -75,6 +78,7 @@ public class ProductManageController {
         }
     }
 
+    //获取产品，测试通过
     @RequestMapping("list")
     public ServerResponse getList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
@@ -89,6 +93,7 @@ public class ProductManageController {
         }
     }
 
+    //产品搜索,测试通过
     @RequestMapping("search")
     public ServerResponse productSearch(HttpSession session, String productName, Integer productId,
                                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -104,6 +109,7 @@ public class ProductManageController {
         }
     }
 
+    //图片上传,测试通过
     @RequestMapping("upload")
     public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file", required = false)MultipartFile file, HttpServletRequest request) {
 
@@ -125,6 +131,7 @@ public class ProductManageController {
         }
     }
 
+    //富文本上传，测试通过
     @RequestMapping("richtext_img_upload")
     public Map richtextImgUpload(HttpSession session, @RequestParam(value = "upload_file", required = false) MultipartFile file,
                                  HttpServletRequest request, HttpServletResponse response) {

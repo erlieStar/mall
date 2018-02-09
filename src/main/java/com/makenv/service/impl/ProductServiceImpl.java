@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
             if (product.getId() != null) {
-                int result = productMapper.updateByPrimaryKey(product);
+                int result = productMapper.updateByPrimaryKeySelective(product);
                 if (result > 0) {
                     return ServerResponse.successMsg("更新产品成功");
                 }
@@ -173,7 +173,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy) {
+    public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize) {
 
         //2个都没有返回错误
         if (StringUtils.isBlank(keyword) && categoryId == null) {
@@ -197,11 +197,6 @@ public class ProductServiceImpl implements ProductService {
             keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
         }
         PageHelper.startPage(pageNum, pageSize);
-        if (StringUtils.isNotBlank(orderBy)) {
-            if (Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
-                String[] orderByArray = orderBy.split("_");
-            }
-        }
 
         List<Product> productList = productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyword) ? null : keyword,
                 categoryIdList.size() == 0 ? null : categoryIdList);

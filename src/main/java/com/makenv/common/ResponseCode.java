@@ -4,7 +4,7 @@ public enum ResponseCode {
 
     SUCCESS(0, "success"),
     ERROR(1, "error"),
-    NEED_LOGIN(2, "need_login"),
+    NEED_LOGIN(10, "need_login"),
     ILLEGAL_ARGUMENT(2, "illegal_argument");
 
     private final int code;

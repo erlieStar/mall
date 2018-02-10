@@ -212,7 +212,7 @@
   <select id="selectByUserId" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from mall_order
-    where uesr_id = #{userId}
+    where user_id = #{userId}
     order by create_time desc
   </select>
   <select id="selectAllOrder" resultMap="BaseResultMap">

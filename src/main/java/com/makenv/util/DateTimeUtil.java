@@ -1,5 +1,7 @@
 package com.makenv.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +23,9 @@ public class DateTimeUtil {
     }
 
     public static String dateToStr(Date date) {
+        if (date == null) {
+            return StringUtils.EMPTY;
+        }
         return simpleDateFormat.format(date);
     }
 }

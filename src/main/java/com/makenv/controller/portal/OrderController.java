@@ -30,7 +30,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    //创建订单
+    //创建订单,用的是购物车中已选中的商品
     @RequestMapping("create")
     public ServerResponse create(HttpSession session, Integer shippingId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -49,6 +49,7 @@ public class OrderController {
         return orderService.cancel(user.getId(), orderNo);
     }
 
+    //获取订单商品信息
     @RequestMapping("get_order_cart_product")
     public ServerResponse getOrderCartProduct(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -67,6 +68,7 @@ public class OrderController {
         return orderService.getOrderDetail(user.getId(), orderNo);
     }
 
+    //订单信息
     @RequestMapping("list")
     public ServerResponse list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {

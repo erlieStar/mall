@@ -39,17 +39,17 @@ public class CartServiceImpl implements CartService {
         //产品不再购物车
         if (cart == null) {
             Cart cartItem = new Cart();
-            cart.setUserId(userId);
-            cart.setProductId(productId);
-            cart.setQuantity(count);
-            cart.setChecked(Const.Cart.CHECKED);
-            cartMapper.insert(cart);
+            cartItem.setUserId(userId);
+            cartItem.setProductId(productId);
+            cartItem.setQuantity(count);
+            cartItem.setChecked(Const.Cart.CHECKED);
+            cartMapper.insert(cartItem);
         } else {
             count = count + cart.getQuantity();
             cart.setQuantity(count);
             cartMapper.updateByPrimaryKeySelective(cart);
         }
-        return null;
+        return this.list(userId);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class CartServiceImpl implements CartService {
         List<CartProductVo> cartProductVoList = Lists.newArrayList();
 
         BigDecimal cartTotalPrice = new BigDecimal(0);
-        if (CollectionUtils.isEmpty(cartList)) {
+        if (CollectionUtils.isNotEmpty(cartList)) {
             for (Cart cartItem : cartList) {
                 CartProductVo cartProductVo = new CartProductVo();
                 cartProductVo.setId(cartItem.getId());

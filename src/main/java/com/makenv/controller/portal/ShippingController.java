@@ -21,6 +21,7 @@ public class ShippingController {
     @Autowired
     ShippingService shippingService;
 
+    //添加地址，测试通过
     @RequestMapping("add")
     public ServerResponse add(HttpSession session, Shipping shipping) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -30,6 +31,7 @@ public class ShippingController {
         return shippingService.add(user.getId(), shipping);
     }
 
+    //删除地址，测试通过
     @RequestMapping("del")
     public ServerResponse del(HttpSession session, int shippingId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -39,6 +41,7 @@ public class ShippingController {
         return shippingService.del(user.getId(), shippingId);
     }
 
+    //登录状态更新地址，测试通过
     @RequestMapping("update")
     public ServerResponse update(HttpSession session, Shipping shipping) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -48,6 +51,7 @@ public class ShippingController {
         return shippingService.update(user.getId(), shipping);
     }
 
+    //选中查看具体地址，测试通过
     @RequestMapping("select")
     public ServerResponse select(HttpSession session, int shippingId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -57,6 +61,7 @@ public class ShippingController {
         return shippingService.select(user.getId(), shippingId);
     }
 
+    //地址列表，测试通过
     @RequestMapping("list")
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,

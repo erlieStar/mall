@@ -202,7 +202,7 @@
     select <include refid="Base_Column_List"/>
     from mall_order
     where order_no = #{orderNo}
-    and uesr_id = #{userId}
+    and user_id = #{userId}
   </select>
   <select id="selectByOrderNo" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>

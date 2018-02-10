@@ -152,10 +152,10 @@
   <select id="selectCartProductCount" resultType="int">
     select IFNULL(sum(quantity), 0) as count from mall_cart where user_id = #{userId}
   </select>
-  <select id="selectCheckedCartByUserId" parameterType="long" resultMap="BaseResultMap">
+  <select id="selectCheckedCartByUserId" parameterType="int" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from mall_cart
-    where userId = #{userId}
+    where user_id = #{userId}
     and checked = 1
   </select>
 </mapper>

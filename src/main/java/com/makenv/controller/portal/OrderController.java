@@ -30,6 +30,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    //创建订单
     @RequestMapping("create")
     public ServerResponse create(HttpSession session, Integer shippingId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -76,6 +77,7 @@ public class OrderController {
         return orderService.getOrderList(user.getId(), pageNum, pageSize);
     }
 
+    //支付
     @RequestMapping("pay")
     public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);

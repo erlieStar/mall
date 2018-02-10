@@ -182,7 +182,7 @@
     and user_id = #{userId}
   </delete>
   <update id="updateByShipping" parameterType="com.makenv.pojo.Shipping">
-    update mmall_shipping
+    update mall_shipping
     set
       receiver_name = #{receiverName,jdbcType=VARCHAR},
       receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
@@ -201,7 +201,7 @@
     select <include refid="Base_Column_List"/>
     from mall_shipping
     where id = #{shippingId}
-    and userId = #{userId}
+    and user_id = #{userId}
   </select>
   <select id="selectByUserId" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>

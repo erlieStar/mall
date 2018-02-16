@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +31,8 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    //创建订单,用的是购物车中已选中的商品
-    @RequestMapping("create")
+    //创建订单,用的是购物车中已选中的商品,测试通过
+    @RequestMapping(value = "create", method = RequestMethod.POST)
     public ServerResponse create(HttpSession session, Integer shippingId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -40,7 +41,8 @@ public class OrderController {
         return orderService.createOrder(user.getId(), shippingId);
     }
 
-    @RequestMapping("cancel")
+    //取消订单,测试通过
+    @RequestMapping(value = "cancel", method = RequestMethod.POST)
     public ServerResponse cancel(HttpSession session, Long orderNo) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -49,8 +51,8 @@ public class OrderController {
         return orderService.cancel(user.getId(), orderNo);
     }
 
-    //获取订单商品信息
-    @RequestMapping("get_order_cart_product")
+    //获取订单商品信息,获取购物车中信息，测试通过
+    @RequestMapping(value = "get_order_cart_product", method = RequestMethod.GET)
     public ServerResponse getOrderCartProduct(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -59,7 +61,8 @@ public class OrderController {
         return orderService.getOrderCartProduct(user.getId());
     }
 
-    @RequestMapping("detail")
+    //订单详情,测试通过
+    @RequestMapping(value = "detail", method = RequestMethod.GET)
     public ServerResponse detail(HttpSession session, Long orderNo) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -68,8 +71,8 @@ public class OrderController {
         return orderService.getOrderDetail(user.getId(), orderNo);
     }
 
-    //订单信息
-    @RequestMapping("list")
+    //订单信息,测试通过
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     public ServerResponse list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -79,8 +82,8 @@ public class OrderController {
         return orderService.getOrderList(user.getId(), pageNum, pageSize);
     }
 
-    //支付
-    @RequestMapping("pay")
+    //支付，测试通过
+    @RequestMapping(value = "pay", method = RequestMethod.POST)
     public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -90,7 +93,11 @@ public class OrderController {
         return orderService.pay(orderNo, user.getId(), path);
     }
 
-    @RequestMapping("alipay_callback")
+    //测试通过
+    //支付宝回调，支付宝负责调用，用户扫描二维码后，支付宝会将该笔订单的变更信息传给商户
+    //支付宝回调文档，https://support.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.mFogPC&treeId=193&articleId=103296&docType=1
+    //发送的是POST请求
+    @RequestMapping(value = "alipay_callback", method = RequestMethod.POST)
     public Object alipayCallback(HttpServletRequest request) {
 
         Map<String, String> params = Maps.newHashMap();
@@ -105,9 +112,12 @@ public class OrderController {
             }
             params.put(name, valueStr);
         }
+        //sign，签名
+        //trade_status，交易状态
         logger.info("支付宝回调,sign:{},trade_status:{},参数:{}",params.get("sign"), params.get("trade_status"), params.toString());
 
         //验证回调的正确性，是不是支付宝发的，并且避免重复通知
+        //要移除sign和sign_type2个参数，其中支付宝sdk去掉了sign参数
         params.remove("sign_type");
         try {
             boolean alipayRSACheckedV2 = AlipaySignature.rsaCheckV2(params, Configs.getAlipayPublicKey(), "utf-8", Configs.getSignType());
@@ -127,7 +137,8 @@ public class OrderController {
         return Const.AlipayCallback.RESPONSE_FAILED;
     }
 
-    @RequestMapping("query_order_pay_status")
+    //查询订单支付状态，测试通过
+    @RequestMapping(value = "query_order_pay_status", method = RequestMethod.GET)
     public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {

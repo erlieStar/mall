@@ -13,6 +13,7 @@ import com.makenv.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +37,7 @@ public class ProductManageController {
     FileService fileService;
 
     //新增或更新产品,传Id为更新，不传为新增,测试通过
-    @RequestMapping("save")
+    @RequestMapping(value = "save", method = RequestMethod.POST)
     public ServerResponse productSave(HttpSession session, Product product) {
 
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -51,7 +52,7 @@ public class ProductManageController {
     }
 
     //产品上下架,测试通过
-    @RequestMapping("set_sale_status")
+    @RequestMapping(value = "set_sale_status", method = RequestMethod.POST)
     public ServerResponse setSaleStatus(HttpSession session, Integer productId, Integer status) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -65,7 +66,7 @@ public class ProductManageController {
     }
 
     //商品详情，测试通过
-    @RequestMapping("detail")
+    @RequestMapping(value = "detail", method = RequestMethod.GET)
     public ServerResponse getDetail(HttpSession session, Integer productId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -79,7 +80,7 @@ public class ProductManageController {
     }
 
     //获取产品，测试通过
-    @RequestMapping("list")
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     public ServerResponse getList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -94,7 +95,7 @@ public class ProductManageController {
     }
 
     //产品搜索,测试通过
-    @RequestMapping("search")
+    @RequestMapping(value = "search", method = RequestMethod.GET)
     public ServerResponse productSearch(HttpSession session, String productName, Integer productId,
                                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
@@ -110,7 +111,7 @@ public class ProductManageController {
     }
 
     //图片上传,测试通过
-    @RequestMapping("upload")
+    @RequestMapping(value = "upload", method = RequestMethod.POST)
     public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file", required = false)MultipartFile file, HttpServletRequest request) {
 
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -132,7 +133,7 @@ public class ProductManageController {
     }
 
     //富文本上传，测试通过
-    @RequestMapping("richtext_img_upload")
+    @RequestMapping(value = "richtext_img_upload", method = RequestMethod.POST)
     public Map richtextImgUpload(HttpSession session, @RequestParam(value = "upload_file", required = false) MultipartFile file,
                                  HttpServletRequest request, HttpServletResponse response) {
 //        富文本中对于返回值有自己的要求,我们使用是simditor所以按照simditor的要求进行返回

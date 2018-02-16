@@ -8,6 +8,7 @@ import com.makenv.service.CartService;
 import com.makenv.vo.CartVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +21,7 @@ public class CartController {
     CartService cartService;
 
     //购物车列表,测试通过
-    @RequestMapping("list")
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     public ServerResponse<CartVo> list(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -30,7 +31,7 @@ public class CartController {
     }
 
     //购物车添加商品,测试通过
-    @RequestMapping("add")
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     public ServerResponse<CartVo> add(HttpSession session, Integer productId, Integer count) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -40,7 +41,7 @@ public class CartController {
     }
 
     //更新购物车商品，测试通过
-    @RequestMapping("update")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     public ServerResponse<CartVo> update(HttpSession session, Integer productId, Integer count) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -50,7 +51,7 @@ public class CartController {
     }
 
     //删除商品，测试通过
-    @RequestMapping("delete_product")
+    @RequestMapping(value = "delete_product", method = RequestMethod.POST)
     public ServerResponse<CartVo> deleteProduct(HttpSession session, String productIds) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -60,7 +61,7 @@ public class CartController {
     }
 
     //全选,测试通过
-    @RequestMapping("select_all")
+    @RequestMapping(value = "select_all", method = RequestMethod.POST)
     public ServerResponse<CartVo> selectAll(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -70,7 +71,7 @@ public class CartController {
     }
 
     //取消全选,测试通过
-    @RequestMapping("un_select_all")
+    @RequestMapping(value = "un_select_all", method = RequestMethod.POST)
     public ServerResponse<CartVo> unSelectAll(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -80,7 +81,7 @@ public class CartController {
     }
 
     //选中商品,测试通过
-    @RequestMapping("select")
+    @RequestMapping(value = "select", method = RequestMethod.POST)
     public ServerResponse<CartVo> select(HttpSession session, Integer productId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -90,7 +91,7 @@ public class CartController {
     }
 
     //取消选中商品,测试通过
-    @RequestMapping("un_select")
+    @RequestMapping(value = "un_select", method = RequestMethod.POST)
     public ServerResponse<CartVo> unSelect(HttpSession session, Integer productId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -100,7 +101,7 @@ public class CartController {
     }
 
     //获取购物车中商品的总数量，测试通过
-    @RequestMapping("get_cart_product_count")
+    @RequestMapping(value = "get_cart_product_count", method = RequestMethod.GET)
     public ServerResponse<Integer> getCartProductCount(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {

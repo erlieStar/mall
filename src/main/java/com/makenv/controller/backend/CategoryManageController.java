@@ -8,6 +8,7 @@ import com.makenv.service.CategoryService;
 import com.makenv.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class CategoryManageController {
     private CategoryService categoryService;
 
     //增加节点，测试通过
-    @RequestMapping("add_category")
+    @RequestMapping(value = "add_category", method = RequestMethod.POST)
     public ServerResponse addCategory(HttpSession session, String categoryName, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -39,7 +40,7 @@ public class CategoryManageController {
     }
 
     //修改品类名字，测试通过
-    @RequestMapping("set_category_name")
+    @RequestMapping(value = "set_category_name", method = RequestMethod.POST)
     public ServerResponse setCategoryName(HttpSession session, Integer categoryId, String categoryName) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -54,7 +55,7 @@ public class CategoryManageController {
     }
 
     //获取平级子节点，测试通过
-    @RequestMapping("get_category")
+    @RequestMapping(value = "get_category", method = RequestMethod.GET)
     public ServerResponse getChildCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -69,7 +70,7 @@ public class CategoryManageController {
     }
 
     //获取当前分类id及递归子节点categoryId，测试通过
-    @RequestMapping("get_deep_category")
+    @RequestMapping(value = "get_deep_category", method = RequestMethod.GET)
     public ServerResponse getAllChildCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {

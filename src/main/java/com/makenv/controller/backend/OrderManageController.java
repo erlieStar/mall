@@ -10,6 +10,7 @@ import com.makenv.service.UserService;
 import com.makenv.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,8 @@ public class OrderManageController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping("list")
+    //订单列表,测试通过
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     public ServerResponse<PageInfo> orderList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -40,7 +42,8 @@ public class OrderManageController {
         }
     }
 
-    @RequestMapping("detail")
+    //订单详情，测试通过
+    @RequestMapping(value = "detail", method = RequestMethod.GET)
     public ServerResponse<OrderVo> orderDetail(HttpSession session, Long orderNo) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -55,7 +58,8 @@ public class OrderManageController {
     }
 
 
-    @RequestMapping("search")
+    //按订单号查询，测试通过
+    @RequestMapping(value = "search", method = RequestMethod.GET)
     public ServerResponse<PageInfo> orderSearch(HttpSession session, Long orderNo,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
@@ -71,7 +75,8 @@ public class OrderManageController {
         }
     }
 
-    @RequestMapping("send_goods")
+    //订单发货，状态必须是已经付款，测试通过
+    @RequestMapping(value = "send_goods", method = RequestMethod.GET)
     public ServerResponse<String> orderSendGoods(HttpSession session, Long orderNo) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if (user == null) {

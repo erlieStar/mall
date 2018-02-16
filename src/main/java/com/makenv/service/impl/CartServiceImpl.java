@@ -36,7 +36,7 @@ public class CartServiceImpl implements CartService {
             return ServerResponse.errorCodeMsg(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Cart cart = cartMapper.selectCartByUserIdProductId(userId, productId);
-        //产品不再购物车
+        //产品不在购物车
         if (cart == null) {
             Cart cartItem = new Cart();
             cartItem.setUserId(userId);
@@ -49,7 +49,8 @@ public class CartServiceImpl implements CartService {
             cart.setQuantity(count);
             cartMapper.updateByPrimaryKeySelective(cart);
         }
-        return this.list(userId);
+        CartVo cartVo = this.getCartVoLimit(userId);
+        return ServerResponse.successData(cartVo);
     }
 
     @Override

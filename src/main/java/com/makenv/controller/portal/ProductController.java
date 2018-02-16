@@ -6,6 +6,7 @@ import com.makenv.service.ProductService;
 import com.makenv.vo.ProductDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,13 +18,13 @@ public class ProductController {
     private ProductService productService;
 
     //产品详情，测试通过
-    @RequestMapping("detail")
+    @RequestMapping(value = "detail", method = RequestMethod.GET)
     public ServerResponse<ProductDetailVo> detail(int productId) {
         return productService.getProductDetail(productId);
     }
 
     //获取产品，测试通过
-    @RequestMapping("list")
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     public ServerResponse<PageInfo> list(@RequestParam(value = "keyword", required = false) String keyword,
                                          @RequestParam(value = "categoryId", required = false) Integer categoryId,
                                          @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,

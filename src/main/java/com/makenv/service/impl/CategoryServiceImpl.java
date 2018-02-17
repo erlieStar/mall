@@ -6,10 +6,9 @@ import com.makenv.common.ServerResponse;
 import com.makenv.dao.CategoryMapper;
 import com.makenv.pojo.Category;
 import com.makenv.service.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class CategoryServiceImpl implements CategoryService {
-
-    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Autowired
     CategoryMapper categoryMapper;
@@ -64,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
     public ServerResponse<List<Category>> getChildCategory(Integer categoryId) {
         List<Category> categoryList = categoryMapper.selectChildByParentId(categoryId);
         if (CollectionUtils.isEmpty(categoryList)) {
-            logger.info("未找到当前分类的子分类");
+            log.info("未找到当前分类的子分类");
         }
         return ServerResponse.successData(categoryList);
     }

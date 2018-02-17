@@ -14,6 +14,7 @@ import com.makenv.util.BigDecimalUtil;
 import com.makenv.util.PropertiesUtil;
 import com.makenv.vo.CartProductVo;
 import com.makenv.vo.CartVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

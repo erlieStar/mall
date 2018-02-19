@@ -8,7 +8,7 @@ import redis.clients.jedis.JedisPool;
 @Slf4j
 public class RedisPoolUtil {
 
-    private static String set(String key, String value) {
+    public static String set(String key, String value) {
         Jedis jedis = null;
         String result = null;
         try {
@@ -24,7 +24,7 @@ public class RedisPoolUtil {
     }
 
     //exTime的单位是秒
-    private static String setEx(String key, String value, int exTime) {
+    public static String setEx(String key, String value, int exTime) {
         Jedis jedis = null;
         String result = null;
         try {
@@ -40,7 +40,7 @@ public class RedisPoolUtil {
     }
 
     //设置key的有效期，单位是秒
-    private static Long expire(String key, int exTime) {
+    public static Long expire(String key, int exTime) {
         Jedis jedis = null;
         Long result = null;
         try {
@@ -55,7 +55,7 @@ public class RedisPoolUtil {
         return result;
     }
 
-    private static Long del(String key) {
+    public static Long del(String key) {
         Jedis jedis = null;
         Long result = null;
         try {
@@ -70,7 +70,7 @@ public class RedisPoolUtil {
         return result;
     }
 
-    private static String get(String key) {
+    public static String get(String key) {
         Jedis jedis = null;
         String result = null;
         try {

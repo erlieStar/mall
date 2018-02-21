@@ -2,11 +2,11 @@ package com.makenv.service.impl;
 
 import com.makenv.common.Const;
 import com.makenv.common.ServerResponse;
-import com.makenv.common.TokenCache;
 import com.makenv.dao.UserMapper;
 import com.makenv.pojo.User;
 import com.makenv.service.UserService;
 import com.makenv.util.MD5Util;
+import com.makenv.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         int result = userMapper.checkAnswer(username, question, answer);
         if (result > 0) {
             String token = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, token);
+            RedisShardedPoolUtil.setEx(Const.TOKEN_PREFIX + username, token, 60 * 60 * 12);
             return ServerResponse.successData(token);
         }
         return ServerResponse.errorMsg("问题回答错误");
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         if (validResponse.isSuccess()) {
             return ServerResponse.errorMsg("用户不存在");
         }
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        String token = RedisShardedPoolUtil.get(Const.TOKEN_PREFIX + username);
         if (StringUtils.isBlank(token)) {
             return ServerResponse.errorMsg("token无效或者过期");
         }

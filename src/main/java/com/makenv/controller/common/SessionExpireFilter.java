@@ -3,7 +3,7 @@ package com.makenv.controller.common;
 import com.makenv.common.Const;
 import com.makenv.util.CookieUtil;
 import com.makenv.util.JsonUtil;
-import com.makenv.util.RedisPoolUtil;
+import com.makenv.util.RedisShardedPoolUtil;
 import org.apache.catalina.User;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
@@ -26,11 +26,11 @@ public class SessionExpireFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if (StringUtils.isNotEmpty(loginToken)) {
-            String userJsonStr = RedisPoolUtil.get(loginToken);
+            String userJsonStr = RedisShardedPoolUtil.get(loginToken);
             User user = JsonUtil.string2Obj(userJsonStr, User.class);
             if (user != null) {
                 //重置session时间
-                RedisPoolUtil.expire(loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+                RedisShardedPoolUtil.expire(loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);

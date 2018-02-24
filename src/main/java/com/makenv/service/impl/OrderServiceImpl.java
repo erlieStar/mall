@@ -30,9 +30,11 @@ import com.makenv.vo.ShippingVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Digits;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -538,5 +540,28 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return ServerResponse.errorMsg("订单不存在");
+    }
+
+    @Override
+    public void closeOrder(int hour) {
+        Date closeDateTime = DateUtils.addHours(new Date(), -hour);
+        List<Order> orderList = orderMapper.selectOrderStatusByCreateTime(Const.OrderStatusEnum.NO_PAY.getCode(), DateTimeUtil.dateToStr(closeDateTime));
+        for (Order order : orderList) {
+            List<OrderItem> orderItemList = orderItemMapper.getByOrderNo(order.getOrderNo());
+            for (OrderItem orderItem : orderItemList) {
+                Integer stock = productMapper.selectStockByProductId(orderItem.getProductId());
+                //考虑到已生成的订单里的商品，被删除的情况
+                if (stock == null) {
+                    continue;
+                }
+                Product product = new Product();
+                product.setId(orderItem.getProductId());
+                //恢复产品的库存
+                product.setStock(stock + orderItem.getQuantity());
+                productMapper.updateByPrimaryKeySelective(product);
+            }
+            orderMapper.closeOrderByOrderId(order.getId());
+            log.info("关闭订单OrderNo:{}", order.getOrderNo());
+        }
     }
 }
